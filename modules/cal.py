@@ -3,7 +3,6 @@ import torch
 from torch import nn, Tensor
 from torch.nn.utils import weight_norm
 
-
 class ContextAdjustmentLayer(nn.Module):
 
     def __init__(self, num_blocks=8, feature_dim=16, expansion=3):
@@ -37,7 +36,6 @@ class ContextAdjustmentLayer(nn.Module):
 
         return disp_final, occ_final
 
-
 class ResBlock(nn.Module):
     def __init__(self, n_feats: int, expansion_ratio: int, res_scale: int = 1.0):
         super(ResBlock, self).__init__()
@@ -50,7 +48,6 @@ class ResBlock(nn.Module):
 
     def forward(self, x: torch.Tensor, disp: torch.Tensor):
         return x + self.module(torch.cat([disp, x], dim=1)) * self.res_scale
-
 
 def build_context_adjustment_layer(args):
     if args.context_adjustment_layer == 'cal':

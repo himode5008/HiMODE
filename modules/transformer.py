@@ -11,9 +11,8 @@ layer_idx = 0
 
 class Transformer(nn.Module):
     """
-    Transformer computes self (intra image) and cross (inter image) attention
+    Transformer computes self and cross attention
     """
-
     def __init__(self, hidden_dim: int = 128, nhead: int = 8, num_attn_layers: int = 6):
         super().__init__()
 
@@ -44,7 +43,6 @@ class Transformer(nn.Module):
 
             feat = checkpoint(create_custom_self_attn(self_attn), feat, pos_enc, pos_indexes)
 
-
             if idx == self.num_attn_layers - 1:
 
                 def create_custom_cross_attn(module):
@@ -62,15 +60,12 @@ class Transformer(nn.Module):
 
             feat, attn_weight = checkpoint(create_custom_cross_attn(cross_attn), feat[:, :hn], feat[:, hn:], pos_enc,
                                            pos_indexes)
-
         layer_idx = 0
         return attn_weight
 
     def forward(self, feat_left: torch.Tensor, feat_right: torch.Tensor, pos_enc: Optional[Tensor] = None):
 
-
         bs, c, hn, w = feat_left.shape
-
         feat_left = feat_left.permute(1, 3, 2, 0).flatten(2).permute(1, 2, 0)
         feat_right = feat_right.permute(1, 3, 2, 0).flatten(2).permute(1, 2, 0)
         if pos_enc is not None:
@@ -83,18 +78,15 @@ class Transformer(nn.Module):
             pos_indexes = None
 
         feat = torch.cat([feat_left, feat_right], dim=1)
-
         attn_weight = self._alternating_attn(feat, pos_enc, pos_indexes, hn)
         attn_weight = attn_weight.view(hn, bs, w, w).permute(1, 0, 2, 3)
 
         return attn_weight
 
-
 class TransformerSelfAttnLayer(nn.Module):
     """
     Self attention layer
     """
-
     def __init__(self, hidden_dim: int, nhead: int):
         super().__init__()
         self.self_attn = MultiheadAttentionRelative(hidden_dim, nhead)
@@ -111,15 +103,12 @@ class TransformerSelfAttnLayer(nn.Module):
                                                pos_indexes=pos_indexes)
 
         feat = feat + feat2
-
         return feat
-
 
 class TransformerCrossAttnLayer(nn.Module):
     """
     Cross attention layer
     """
-
     def __init__(self, hidden_dim: int, nhead: int):
         super().__init__()
         self.cross_attn = MultiheadAttentionRelative(hidden_dim, nhead)
@@ -144,7 +133,6 @@ class TransformerCrossAttnLayer(nn.Module):
 
         feat_right = feat_right + feat_right_2
 
-
         if last_layer:
             w = feat_left_2.size(0)
             attn_mask = self._generate_square_subsequent_mask(w).to(feat_left.device)
@@ -159,7 +147,6 @@ class TransformerCrossAttnLayer(nn.Module):
 
         feat_left = feat_left + feat_left_2
 
-
         feat = torch.cat([feat_left, feat_right], dim=1)  # Wx2HNxC
 
         return feat, raw_attn
@@ -170,7 +157,6 @@ class TransformerCrossAttnLayer(nn.Module):
         mask = torch.triu(torch.ones(sz, sz), diagonal=1)
         mask[mask == 1] = float('-inf')
         return mask
-
 
 def build_transformer(args):
     return Transformer(

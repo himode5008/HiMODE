@@ -7,8 +7,6 @@ from torch import nn
 from torchvision.models.resnet import BasicBlock
 
 from Utils.misc import NestedTensor
-
-
 class SppBackbone(nn.Module):
 
     def __init__(self):
@@ -64,8 +62,7 @@ class SppBackbone(nn.Module):
 
         _, _, h, w = x.left.shape
 
-        src_stereo = torch.cat([x.left, x.right], dim=0)  # 2NxCxHxW
-
+        src_stereo = torch.cat([x.left, x.right], dim=0)
         # in conv
         output = self.in_conv(src_stereo)  # 1/2
 
@@ -86,7 +83,6 @@ class SppBackbone(nn.Module):
         output_3 = torch.cat([spp_1, spp_2, spp_3, spp_4], dim=1)  # 1/16
 
         return [src_stereo, output_1, output_2, output_3]
-
 
 def build_backbone(args):
     return SppBackbone()

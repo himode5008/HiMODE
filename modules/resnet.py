@@ -11,7 +11,6 @@ NoOp = getattr(files.CubePad, 'NoOp')
 __all__ = ['HardNet', 'resnet18', 'resnet34', 'resnet50', 'resnet101',
            'resnet152']
 
-
 model_urls = {
     'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
     'resnet34': 'https://download.pytorch.org/models/resnet34-333f7ec4.pth',
@@ -19,7 +18,6 @@ model_urls = {
     'resnet101': 'https://download.pytorch.org/models/resnet101-5d3b4d8f.pth',
     'resnet152': 'https://download.pytorch.org/models/resnet152-b121ed2d.pth',
 }
-
 
 def conv3x3(in_planes, out_planes, stride=1, auto_padding=True):
     """3x3 convolution with padding"""
@@ -31,7 +29,6 @@ def conv3x3(in_planes, out_planes, stride=1, auto_padding=True):
 def conv1x1(in_planes, out_planes, stride=1, auto_padding=True):
     """1x1 convolution"""
     return nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=stride, bias=False)
-
 
 class BasicBlock(nn.Module):
     expansion = 1
@@ -65,7 +62,6 @@ class BasicBlock(nn.Module):
         out = self.relu(out)
 
         return out
-
 
 class Bottleneck(nn.Module):
     expansion = 4
@@ -105,7 +101,6 @@ class Bottleneck(nn.Module):
         out = self.relu(out)
 
         return out
-
 
 class HardNet(nn.Module):
 
@@ -172,7 +167,6 @@ class HardNet(nn.Module):
 
         return x
 
-
 def resnet18(pretrained=False, **kwargs):
 
     model = HardNet(BasicBlock, [2, 2, 2, 2], **kwargs)
@@ -180,13 +174,11 @@ def resnet18(pretrained=False, **kwargs):
         model.load_state_dict(model_zoo.load_url(model_urls['resnet18']))
     return model
 
-
 def resnet34(pretrained=False, **kwargs):
     model = HardNet(BasicBlock, [3, 4, 6, 3], **kwargs)
     if pretrained:
         model.load_state_dict(model_zoo.load_url(model_urls['resnet34']))
     return model
-
 
 def resnet50(pretrained=False, **kwargs):
 
@@ -195,14 +187,12 @@ def resnet50(pretrained=False, **kwargs):
         model.load_state_dict(model_zoo.load_url(model_urls['resnet50']))
     return model
 
-
 def resnet101(pretrained=False, **kwargs):
 
     model = HardNet(Bottleneck, [3, 4, 23, 3], **kwargs)
     if pretrained:
         model.load_state_dict(model_zoo.load_url(model_urls['resnet101']))
     return model
-
 
 def resnet152(pretrained=False, **kwargs):
 

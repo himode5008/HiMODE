@@ -8,7 +8,6 @@ class MultiheadAttentionRelative(nn.MultiheadAttention):
     """
     Multihead attention with relative positional encoding
     """
-
     def __init__(self, embed_dim, num_heads):
         super(MultiheadAttentionRelative, self).__init__(embed_dim, num_heads, dropout=0.0, bias=True,
                                                          add_bias_kv=False, add_zero_attn=False,
@@ -117,5 +116,4 @@ class MultiheadAttentionRelative(nn.MultiheadAttention):
 
         # raw attn
         raw_attn = raw_attn.sum(dim=1)
-
         return v_o, attn, raw_attn

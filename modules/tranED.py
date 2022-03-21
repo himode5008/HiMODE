@@ -310,7 +310,6 @@ class CETransform(nn.Module):
     def forward(self, equi, cube):
         return self.e2c(equi), self.c2e(cube)
 
-
 def lstm_forward(bilstm_list, CE, feat_equi, feat_cube, idx, max_iters=3):
     bs, bs1 = feat_equi.shape[0], feat_cube.shape[0]
     assert bs1 == bs * 6

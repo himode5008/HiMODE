@@ -23,7 +23,7 @@ python himode.py
 ```
 
 After that, the results will be show in this **Result** folder! <br>
-+ Here is the example of some images
++ Here is the example of some GRAYSCALE images
 <p float="left">
   <img src="output/2.jpg" width="30%" align="middle"/>
   <img src="output/4.jpg" width="30%" align="middle"/>
@@ -40,6 +40,25 @@ After that, the results will be show in this **Result** folder! <br>
   <img src="output/2.jpg" width="30%" align="middle" />
   <img src="output/8.jpg" width="30%" align="middle" />
   <img src="output/9.jpg" width="30%" align="middle" />
+</p>
+
++ Here is the example of some COLORFUL images
+<p float="left">
+  <img src="output/11.jpg" width="30%" align="middle"/>
+  <img src="output/18.jpg" width="30%" align="middle"/>
+  <img src="output/12.jpg" width="30%" align="middle"/>
+</p>
+
+<p float="left">
+  <img src="output/19.jpg" width="30%" align="middle"/>
+  <img src="output/13.jpg" width="30%" align="middle"/>
+  <img src="output/15.jpg" width="30%" align="middle"/>
+</p>
+
+<p float="left">
+  <img src="output/14.jpg" width="30%" align="middle" />
+  <img src="output/16.jpg" width="30%" align="middle" />
+  <img src="output/17.jpg" width="30%" align="middle" />
 </p>
 
 
