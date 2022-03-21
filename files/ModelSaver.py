@@ -22,7 +22,7 @@ class BaseSaver:
             #model.init_weights()
             return None, step
         
-        # No providing model_name, use latest one
+        # generate model name,
         if model_name is not None:
             model_name = [x for x in self.model_lst if '_%s.'%(model_name) in x][0]
         else:
@@ -33,7 +33,7 @@ class BaseSaver:
         params = torch.load(name)
         model.load_state_dict(params, strict=False)
         
-        # Use step if it's detected
+        # it's detected
         strs = model_name.replace('.pkl', '').split('_')
         if len(strs) == 3:
             step = int(strs[-1]) + 1

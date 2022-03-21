@@ -16,7 +16,7 @@ from .Equirec2Cube import Equirec2Cube
 from .SpherePad import SpherePad 
 
 CE = CETransform()
-
+#cubemode
 class CustomPad(nn.Module):
     def __init__(self, pad_func):
         super(CustomPad, self).__init__()

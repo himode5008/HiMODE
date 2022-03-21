@@ -3,10 +3,10 @@ import utils
 import numpy as np
 from vispy import app
 
+# generate 3D layout in details
 if __name__ == '__main__':
     argv = sys.argv
     if len(argv) != 2:
-#       print ('Usage: python layout3D.py xxxx.npy')
         exit()
     data = np.load(argv[1], allow_pickle=True).item()
 

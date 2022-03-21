@@ -13,10 +13,7 @@ class SpherePad(nn.Module):
         super(SpherePad, self).__init__()
         self.pad_size = pad_size
         self.data = {}
-        # pad order: up, down, left, right sides
-        # use yes/no flag to choose flip/transpose or not
-        # notation: #face-#side_#flip-hor_#flip_ver_#transpose
-        # transpose is applied first
+        # pad order: up, down, left, right sides cube mode
         self.relation = {
             'back': ['top-up_yes_yes_no', 'down-down_yes_yes_no', 'right-right_no_no_no', 'left-left_no_no_no'],
             'down': ['front-down_no_no_no', 'back-down_yes_yes_no', 'left-down_yes_no_yes', 'right-down_no_yes_yes'],

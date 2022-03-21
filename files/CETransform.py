@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from . import Equirec2Cube, Cube2Equirec
 
-
+#3D layout
 class CETransform(nn.Module):
     def __init__(self):
         super(CETransform, self).__init__()

@@ -44,10 +44,7 @@ def pose_vec2mat(vec, rotation_mode='euler'):
     return transform_mat
 
 def RodriguesTensor(axis):
-    #
-    # axis is [batch x K x 3]
-    # K dimension is for SfM-Net
-    # output is [batch x K x 9]
+    #pridect 3d layeout
 
     theta = torch.unsqueeze(torch.norm(axis, p = 2, dim = 2), 2)
     r = axis / theta

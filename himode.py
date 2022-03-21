@@ -13,12 +13,13 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 import files
 
-parser = argparse.ArgumentParser(description='HiMODE Depth Estimation',
+parser = argparse.ArgumentParser(description='HiMODE 360 degree Depth Estimation',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('--path', default='./Result', type=str, help='Images path')
+parser.add_argument('--path', default='./Result', type=str, help='Images exact path')
 parser.add_argument('--nocrop', action='store_true', help='No Cropping')
 args = parser.parse_args()
 
+#Dataset
 class MyData(data.Dataset):
     def __init__(self, root):
         imgs = os.listdir(root)

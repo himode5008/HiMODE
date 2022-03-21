@@ -8,7 +8,6 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-
 class NestedTensor(object):
     def __init__(self, left, right, disp=None, sampled_cols=None, sampled_rows=None, occ_mask=None,
                  occ_mask_right=None):
@@ -20,13 +19,11 @@ class NestedTensor(object):
         self.sampled_cols = sampled_cols
         self.sampled_rows = sampled_rows
 
-
 def center_crop(layer, max_height, max_width):
     _, _, h, w = layer.size()
     xy1 = (w - max_width) // 2
     xy2 = (h - max_height) // 2
     return layer[:, :, xy2:(xy2 + max_height), xy1:(xy1 + max_width)]
-
 
 def batched_index_select(source, dim, index):
     views = [source.shape[0]] + [1 if i != dim else -1 for i in range(1, len(source.shape))]
@@ -61,10 +58,8 @@ def torch_1d_sample(source, sample_points, mode='linear'):
     out = torch.gather(source, -1, idx_l) * weight_l + torch.gather(source, -1, idx_r) * weight_r
     return out.squeeze(-1)
 
-
 def get_clones(module, N):
     return nn.ModuleList([copy.deepcopy(module) for i in range(N)])
-
 
 def find_occ_mask(disp_left, disp_right):
     """
@@ -74,57 +69,49 @@ def find_occ_mask(disp_left, disp_right):
     """
     w = disp_left.shape[-1]
 
-    # # left occlusion
-    # find corresponding pixels in target image
+    # find corresponding pixels in  depth
     coord = np.linspace(0, w - 1, w)[None,]  # 1xW
     right_shifted = coord - disp_left
 
     # 1. negative locations will be occlusion
     occ_mask_l = right_shifted <= 0
 
-    # 2. wrong matches will be occlusion
-    right_shifted[occ_mask_l] = 0  # set negative locations to 0
+    # 2. wrong depth will be occlusion
+    right_shifted[occ_mask_l] = 0 
     right_shifted = right_shifted.astype(np.int)
     disp_right_selected = np.take_along_axis(disp_right, right_shifted,
-                                             axis=1)  # find tgt disparity at src-shifted locations
-    wrong_matches = np.abs(disp_right_selected - disp_left) > 1  # theoretically, these two should match perfectly
+                                             axis=1)
+    wrong_matches = np.abs(disp_right_selected - disp_left) > 1
     wrong_matches[disp_right_selected <= 0.0] = False
     wrong_matches[disp_left <= 0.0] = False
-
-    # produce final occ
-    wrong_matches[occ_mask_l] = True  # apply case 1 occlusion to case 2
+    wrong_matches[occ_mask_l] = True
     occ_mask_l = wrong_matches
 
-    # # right occlusion
-    # find corresponding pixels in target image
+    # find corresponding pixels in depth image
     coord = np.linspace(0, w - 1, w)[None,]  # 1xW
     left_shifted = coord + disp_right
 
     # 1. negative locations will be occlusion
     occ_mask_r = left_shifted >= w
 
-    # 2. wrong matches will be occlusion
-    left_shifted[occ_mask_r] = 0  # set negative locations to 0
+    left_shifted[occ_mask_r] = 0 
     left_shifted = left_shifted.astype(np.int)
     disp_left_selected = np.take_along_axis(disp_left, left_shifted,
-                                            axis=1)  # find tgt disparity at src-shifted locations
-    wrong_matches = np.abs(disp_left_selected - disp_right) > 1  # theoretically, these two should match perfectly
+                                            axis=1) 
+    wrong_matches = np.abs(disp_left_selected - disp_right) > 1
     wrong_matches[disp_left_selected <= 0.0] = False
     wrong_matches[disp_right <= 0.0] = False
 
-    # produce final occ
-    wrong_matches[occ_mask_r] = True  # apply case 1 occlusion to case 2
+    # produce final depth
+    wrong_matches[occ_mask_r] = True 
     occ_mask_r = wrong_matches
 
     return occ_mask_l, occ_mask_r
-
 
 def save_and_clear(idx, output_file):
     with open('output-' + str(idx) + '.dat', 'wb') as f:
         torch.save(output_file, f)
     idx += 1
-
-    # clear
     for key in output_file:
         output_file[key].clear()
 
