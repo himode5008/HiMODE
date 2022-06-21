@@ -1,4 +1,4 @@
-# HiMODE (Code will be released soon..)
+# HiMODE [HiMODE](https://openaccess.thecvf.com/content/CVPR2022W/OmniCV/papers/Junayed_HiMODE_A_Hybrid_Monocular_Omnidirectional_Depth_Estimation_Model_CVPRW_2022_paper.pdf) (Code will be released soon..)
 
 #### Requirements of Run this Code
 ```
