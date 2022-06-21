@@ -1,4 +1,4 @@
-# HiMODE (Coming main code......)
+# HiMODE (Code will be released soon..)
 
 #### Requirements of Run this Code
 ```
